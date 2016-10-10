@@ -1,0 +1,9 @@
+D:\Github\Gen_Pack\Gen_Pack\bin\Debug\Gen_Pack.exe.config
+D:\Github\Gen_Pack\Gen_Pack\bin\Debug\Gen_Pack.exe
+D:\Github\Gen_Pack\Gen_Pack\bin\Debug\Gen_Pack.pdb
+D:\Github\Gen_Pack\Gen_Pack\obj\Debug\Gen_Pack.csprojResolveAssemblyReference.cache
+D:\Github\Gen_Pack\Gen_Pack\obj\Debug\Gen_Pack.Form1.resources
+D:\Github\Gen_Pack\Gen_Pack\obj\Debug\Gen_Pack.Properties.Resources.resources
+D:\Github\Gen_Pack\Gen_Pack\obj\Debug\Gen_Pack.csproj.GenerateResource.Cache
+D:\Github\Gen_Pack\Gen_Pack\obj\Debug\Gen_Pack.exe
+D:\Github\Gen_Pack\Gen_Pack\obj\Debug\Gen_Pack.pdb
