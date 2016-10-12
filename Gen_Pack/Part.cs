@@ -13,6 +13,7 @@ namespace Gen_Pack
         public double size_x { get; set; }
         public double size_y { get; set; }
         public bool is_placed { get; set; }  //set true if part is on panel
+        public bool clashes { get; set; } //set to true if part is overlapping with another
         public rotation part_orientation { get; set; }
         public enum rotation
         {
@@ -30,9 +31,10 @@ namespace Gen_Pack
         {
             this.position_x = 0.0d;
             this.position_y = 0.0d;
-            this.is_placed = false;
+            this.is_placed = true;
             this.part_orientation = rotation.top;
             this.placement_priority = priority.normal;
+            this.clashes = false;
         }
 
         public Part(double pos_x, double pos_y, double  sizex, double sizey, priority priority_to_set)
@@ -42,6 +44,8 @@ namespace Gen_Pack
             this.placement_priority = priority_to_set;
             this.size_x = sizex;
             this.size_y = sizey;
+            this.is_placed = true;
+            this.clashes = false;
         }
     }
 }

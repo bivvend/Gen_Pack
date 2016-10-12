@@ -116,7 +116,37 @@ namespace Gen_Pack
         private void buttonPack_Click(object sender, EventArgs e)
         {
             packer.Evolve();
-            Show_Evolution(packer.evolutions[1].configuration);
+            double best_score = -10000000000000000000.0d;
+            double average_score = 0.0d;
+            
+            int N_to_pick = 0;
+            try
+            {
+                //find best evolution
+                for(int N=0; N<packer.evolutions.Count;N++)
+                {
+                    average_score += packer.evolutions[N].score;
+                    if (packer.evolutions[N].score>best_score)
+                    {
+                        N_to_pick = N;
+                        best_score = packer.evolutions[N].score;
+                        textBoxN.Text = N_to_pick.ToString();
+
+                        labelHighestScore.Text = "Highest score: " + best_score.ToString();
+                    }
+                }
+                Show_Evolution(packer.evolutions[N_to_pick].configuration);
+                if(packer.evolutions.Count>0)
+                {
+                    average_score = average_score / (double)packer.evolutions.Count;
+                }
+                labelAverageScore.Text = "Average score: " + average_score.ToString();
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
          
         }
 
@@ -138,30 +168,52 @@ namespace Gen_Pack
                 double plot_height = 0.0d;
 
                 Pen blackPen = new Pen(Color.Black, 0.1f);
+                Pen redPen = new Pen(Color.Red, 0.1f);
 
                 // Draw line to screen.
                 using (var graphics = Graphics.FromImage(bitmap))
                 {
                     foreach (Part a_part in part_list)
                     {
-                        plotx1 = a_part.position_x * scale_x;
-                        ploty1 = height -  (a_part.position_y * scale_y);
+                        if (a_part.is_placed)
+                        {
+                            plotx1 = a_part.position_x * scale_x;
+                            ploty1 = height - (a_part.position_y * scale_y);
 
-                        plot_width = a_part.size_x * scale_x;
-                        plot_height = a_part.size_y * scale_y;
+                            plot_width = a_part.size_x * scale_x;
+                            plot_height = a_part.size_y * scale_y;
 
-                        graphics.DrawRectangle(blackPen, (float)plotx1, (float)ploty1, (float)plot_width, (float)plot_height);
+                            if(a_part.clashes)
+                                graphics.DrawRectangle(redPen, (float)plotx1, (float)ploty1, (float)plot_width, (float)plot_height);
+                            else
+                                graphics.DrawRectangle(blackPen, (float)plotx1, (float)ploty1, (float)plot_width, (float)plot_height);
+                        }
                     }
                 }
 
                 pictureBox1.Image = bitmap;
-                blackPen.Dispose();               
+                blackPen.Dispose();
+                redPen.Dispose();  
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        private void buttonShowN_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int N = Convert.ToInt32(this.textBoxN.Text);
+                Show_Evolution(packer.evolutions[N].configuration);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
         }
     }
 }
