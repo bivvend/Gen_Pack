@@ -26,7 +26,7 @@ namespace Gen_Pack
         private int number_parts = 1;
 
         private int number_siblings = 100;   //the number of evolutions at any time.
-        private int after_cull_number = 50;  //the number of evolutions to keep. 
+        private int number_steps = 100;
 
         private Random random = new Random();
 
@@ -45,6 +45,9 @@ namespace Gen_Pack
             this.textBoxNumber.Text = "10";
             this.textBoxSheetX.Text = "500";
             this.textBoxSheetY.Text = "500";
+
+            packer.Number_Of_Siblings = number_siblings;
+            packer.Number_Of_Steps = number_steps;
 
             Store_Data();           
 
@@ -81,6 +84,8 @@ namespace Gen_Pack
             Store_Data();
             main_panel = new Panel(sheet_x, sheet_y);
             packer = new Gen_Packer();
+            packer.Number_Of_Siblings = number_siblings;
+            packer.Number_Of_Steps = number_steps;
             packer.panel = main_panel;
             initial_part_list = new List<Part>();
 
@@ -101,7 +106,7 @@ namespace Gen_Pack
                 initial_part_list.Add(new Part(position_x, position_y, size_x, size_y, Part.priority.normal));                
             }
             packer.initial_part_list = initial_part_list;
-            packer.Fill_To_N_Evolutions(number_siblings);
+            packer.Fill_To_N_Evolutions(number_siblings, initial_part_list);
 
             //show initial state
             Show_Evolution(packer.initial_part_list);
@@ -115,33 +120,13 @@ namespace Gen_Pack
 
         private void buttonPack_Click(object sender, EventArgs e)
         {
-            packer.Evolve();
-            double best_score = -10000000000000000000.0d;
-            double average_score = 0.0d;
-            
-            int N_to_pick = 0;
             try
             {
-                //find best evolution
-                for(int N=0; N<packer.evolutions.Count;N++)
-                {
-                    average_score += packer.evolutions[N].score;
-                    if (packer.evolutions[N].score>best_score)
-                    {
-                        N_to_pick = N;
-                        best_score = packer.evolutions[N].score;
-                        textBoxN.Text = N_to_pick.ToString();
-
-                        labelHighestScore.Text = "Highest score: " + best_score.ToString();
-                    }
-                }
-                Show_Evolution(packer.evolutions[N_to_pick].configuration);
-                if(packer.evolutions.Count>0)
-                {
-                    average_score = average_score / (double)packer.evolutions.Count;
-                }
-                labelAverageScore.Text = "Average score: " + average_score.ToString();
-
+                packer.Evolve();
+                labelHighestScore.Text = "Highest score: " + packer.best_score.ToString();
+                labelAverageScore.Text = "Average score: " + packer.average_score.ToString();
+                Show_Evolution(packer.evolutions[packer.N_of_best].configuration);
+         
             }
             catch(Exception ex)
             {

@@ -64,6 +64,8 @@ namespace Gen_Pack
             double x2 = 0.0d;
             double y2 = 0.0d;
 
+            double a_right = 0.0d;  //x of right side of
+
             double overlap_failure = 0.0d;
 
             PointD corner_top_left = new PointD(0.0d, 0.0d);
@@ -98,7 +100,9 @@ namespace Gen_Pack
                         corner_bottom_left = new PointD(x2, y2 - b_part.size_y);
                         corner_bottom_right = new PointD(x2 + b_part.size_x, y2 - b_part.size_y);
 
-                        if( (corner_top_left.X - x1)<=a_part.size_x && (corner_top_left.X-x1)>=0 && (y1 - corner_top_left.Y) <= a_part.size_y && (y1 -corner_top_left.Y) >= 0)
+
+
+                        if(true)
                         {
                             a_part.clashes = true;
                             b_part.clashes = true;
@@ -106,21 +110,21 @@ namespace Gen_Pack
                             overlap_failure += (a_part.size_x - (x2 - x1)) * (a_part.size_y - (y1 - y2));
                         }
 
-                        if ((corner_top_right.X -x1) <= a_part.size_x && (corner_top_right.X - x1) >= 0 && (y1 - corner_top_right.Y) <= a_part.size_y && (y1 - corner_top_right.Y) >= 0)
+                        if (true)
                         {
                             a_part.clashes = true;
                             b_part.clashes = true;
                             overlap_failure += (a_part.size_x - (corner_top_right.X - x1)) * (a_part.size_y - (y1 - corner_top_right.Y));
                         }
 
-                        if ((corner_bottom_left.X - x1) <= a_part.size_x && (corner_bottom_left.X - x1) >= 0 && (y1 - corner_bottom_left.Y) <= a_part.size_y && (y1 - corner_bottom_left.Y) >= 0)
+                        if (true)
                         {
                             a_part.clashes = true;
                             b_part.clashes = true;
                             overlap_failure +=  (a_part.size_x - (corner_bottom_left.X - x1)) * (a_part.size_y - (y1 - corner_bottom_left.Y));
                         }
 
-                        if ((corner_bottom_right.X - x1) <= a_part.size_x && (corner_bottom_right.X - x1) >= 0 && (y1 -corner_bottom_right.Y) <= a_part.size_y && (y1 - corner_bottom_right.Y) >= 0)
+                        if (true)
                         {
                             a_part.clashes = true;
                             b_part.clashes = true;
