@@ -26,7 +26,7 @@ namespace Gen_Pack
         private int number_parts = 1;
 
         private int number_siblings = 100;   //the number of evolutions at any time.
-        private int number_steps = 100;
+        private int number_steps = 1000;
 
         private Random random = new Random();
 
@@ -94,19 +94,36 @@ namespace Gen_Pack
             double size_x;
             double size_y;
 
+            double step_y = 0.0d;
+            double step_x = 0.0d;
+
+            if (main_panel.size_y > main_panel.size_x)
+            {
+                step_y = main_panel.size_y / number_parts;
+                step_x = 1;
+            }
+            else
+            {
+                step_x = main_panel.size_x / number_parts;
+                step_y = 1;
+            }
+
             random = new Random((int)DateTime.Now.Ticks);
 
             while (initial_part_list.Count< number_parts)
             {
                 size_x = GetRandomNumber(min_x, max_x);
                 size_y = GetRandomNumber(min_y, max_y);
-                position_x = GetRandomNumber(0, sheet_x-size_x);
-                position_y = GetRandomNumber(size_y, sheet_y);
+
+
+                position_x = initial_part_list.Count * step_x;
+                position_y = main_panel.size_y - initial_part_list.Count * step_y;
 
                 initial_part_list.Add(new Part(position_x, position_y, size_x, size_y, Part.priority.normal));                
             }
             packer.initial_part_list = initial_part_list;
             packer.Fill_To_N_Evolutions(number_siblings, initial_part_list);
+            
 
             //show initial state
             Show_Evolution(packer.initial_part_list);
@@ -125,7 +142,8 @@ namespace Gen_Pack
                 packer.Evolve();
                 labelHighestScore.Text = "Highest score: " + packer.best_score.ToString();
                 labelAverageScore.Text = "Average score: " + packer.average_score.ToString();
-                Show_Evolution(packer.evolutions[packer.N_of_best].configuration);
+                labelBestEverScore.Text = "Best ever score: " + packer.best_ever_score;
+                Show_Evolution(packer.best_ever_part_list);
          
             }
             catch(Exception ex)

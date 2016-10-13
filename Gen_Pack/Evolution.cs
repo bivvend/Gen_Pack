@@ -64,14 +64,18 @@ namespace Gen_Pack
             double x2 = 0.0d;
             double y2 = 0.0d;
 
-            double a_right = 0.0d;  //x of right side of
-
             double overlap_failure = 0.0d;
 
-            PointD corner_top_left = new PointD(0.0d, 0.0d);
-            PointD corner_top_right = new PointD(0.0d, 0.0d);
-            PointD corner_bottom_left = new PointD(0.0d, 0.0d);
-            PointD corner_bottom_right = new PointD(0.0d, 0.0d);
+            double a_right = 0.0d;
+            double a_left = 0.0d;
+            double a_top = 0.0d;
+            double a_bottom = 0.0d;
+
+            double b_right = 0.0d;
+            double b_left = 0.0d;
+            double b_top = 0.0d;
+            double b_bottom = 0.0d;
+
 
             //assume non clash at first
             foreach (Part a_part in configuration)
@@ -79,59 +83,48 @@ namespace Gen_Pack
                 a_part.clashes = false;
             }
 
-            foreach(Part a_part in configuration)
+            foreach (Part a_part in configuration)
             {
                 x1 = a_part.position_x;
-                y1 = a_part.position_y;               
+                y1 = a_part.position_y;
+
+                a_left = x1;
+                a_right = x1 + a_part.size_x;
+
+                a_top = y1;
+                a_bottom = y1 - a_part.size_y;
+
 
                 foreach (Part b_part in configuration)
                 {
                     x2 = b_part.position_x;
-                    y2 = b_part.position_y; 
+                    y2 = b_part.position_y;
 
-                    if(x1==x2 && y1==y2)
+                    b_left = x2;
+                    b_right = x2 + b_part.size_x;
+
+                    b_top = y2;
+                    b_bottom = y2 - b_part.size_y;
+
+                    if (x1 == x2 && y1 == y2)
                     {
                         //Part can't clash with itself
                     }
                     else
                     {
-                        corner_top_left = new PointD(x2,y2);
-                        corner_top_right = new PointD(x2+b_part.size_x, y2);
-                        corner_bottom_left = new PointD(x2, y2 - b_part.size_y);
-                        corner_bottom_right = new PointD(x2 + b_part.size_x, y2 - b_part.size_y);
-
-
-
-                        if(true)
+                        if (a_left <= b_right && a_right >= b_left && a_top >= b_bottom && a_bottom <= b_top)
                         {
+                            overlap_failure += 1000.0d;
                             a_part.clashes = true;
                             b_part.clashes = true;
-
-                            overlap_failure += (a_part.size_x - (x2 - x1)) * (a_part.size_y - (y1 - y2));
                         }
-
-                        if (true)
+                        else
                         {
-                            a_part.clashes = true;
-                            b_part.clashes = true;
-                            overlap_failure += (a_part.size_x - (corner_top_right.X - x1)) * (a_part.size_y - (y1 - corner_top_right.Y));
+                            //distance bonus
+                            
+                            overlap_failure += Math.Abs(x2 - x1)/(a_part.size_x+ b_part.size_x) + Math.Abs(y2 - y1) / (a_part.size_x + b_part.size_x);
+                            //
                         }
-
-                        if (true)
-                        {
-                            a_part.clashes = true;
-                            b_part.clashes = true;
-                            overlap_failure +=  (a_part.size_x - (corner_bottom_left.X - x1)) * (a_part.size_y - (y1 - corner_bottom_left.Y));
-                        }
-
-                        if (true)
-                        {
-                            a_part.clashes = true;
-                            b_part.clashes = true;
-
-                            overlap_failure += (a_part.size_x - (corner_bottom_right.X - x1)) * (a_part.size_y - (y1 - corner_bottom_right.Y));
-                        }
-
                     }
 
                 }
@@ -142,7 +135,9 @@ namespace Gen_Pack
 
         public void Shuffle(double scale, double panel_size_x, double panel_size_y)
         {
-           foreach(Part a_part in configuration)
+            double temp_size_x = 0.0d;
+            double temp_size_y = 0.0d;
+            foreach (Part a_part in configuration)
             {
                 a_part.position_x += GetRandomNumber(-1.0d*scale,1.0d*scale);
                 a_part.position_y += GetRandomNumber(-1.0d*scale, 1.0d*scale);
@@ -162,6 +157,33 @@ namespace Gen_Pack
                 if (a_part.position_y < a_part.size_y)
                 {
                     a_part.position_y = a_part.size_y;
+                }
+
+                //occassionally allow evolutions (10%)
+                if(GetRandomNumber(0.0d,1.0d)>0.9d)
+                {
+                    temp_size_x = a_part.size_x;
+                    temp_size_y = a_part.size_y;
+
+                    a_part.size_x = temp_size_y;
+                    a_part.size_y = temp_size_x;
+
+                    if (a_part.position_x > (panel_size_x - a_part.size_x))
+                    {
+                        a_part.position_x = panel_size_x - a_part.size_x;
+                    }
+                    if (a_part.position_x < 0.0d)
+                    {
+                        a_part.position_x = 0.0d;
+                    }
+                    if (a_part.position_y > (panel_size_y))
+                    {
+                        a_part.position_y = panel_size_y;
+                    }
+                    if (a_part.position_y < a_part.size_y)
+                    {
+                        a_part.position_y = a_part.size_y;
+                    }
                 }
             }
         }
