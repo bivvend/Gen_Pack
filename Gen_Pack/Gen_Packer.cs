@@ -73,22 +73,29 @@ namespace Gen_Pack
                 {
                     best_ever_part_list = initial_part_list;
                 }
-
-                Cull();
-                Fill_To_N_Evolutions(Number_Of_Siblings, best_ever_part_list);
-
+                Evaluate_Evolutions();
                 for (int N = 0; N < this.Number_Of_Steps; N++)
                 {
+                    Cull();
+                    Fill_To_N_Evolutions(Number_Of_Siblings, best_ever_part_list);
+
+
                     foreach (Evolution state in evolutions)
                     {
-                        state.Shuffle(5, panel.size_x, panel.size_y);
+                        if (state.number_of_clashes > 0)
+                        {
+                            state.Shuffle(panel.size_x / 4.0 + panel.size_y / 4.0, panel.size_x, panel.size_y);
+                        }
+                        else
+                        {
+                            state.Shuffle(panel.size_x / 20.0 + panel.size_y / 20.0, panel.size_x, panel.size_y);
+                        }
                         state.score = state.Calc_Score();
                     }
 
-                }
-
-                Evaluate_Evolutions();
-                Store_Best();
+                    Evaluate_Evolutions();
+                    Store_Best();
+                }                
             }
             catch(Exception ex)
             {

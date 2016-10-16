@@ -12,6 +12,7 @@ namespace Gen_Pack
         public List<Part> configuration { get; set; }
         public double score { get; set; }
         Random random = new Random();
+        public int number_of_clashes { get; set; }
 
 
         public struct PointD
@@ -76,15 +77,20 @@ namespace Gen_Pack
             double b_top = 0.0d;
             double b_bottom = 0.0d;
 
+            Part a_part;
+            Part b_part;
+
+            int no_clashes = 0;
 
             //assume non clash at first
-            foreach (Part a_part in configuration)
+            foreach (Part part in configuration)
             {
-                a_part.clashes = false;
+                part.clashes = false;
             }
 
-            foreach (Part a_part in configuration)
+            for(int M= 0; M < configuration.Count; M++)
             {
+                a_part = configuration[M];
                 x1 = a_part.position_x;
                 y1 = a_part.position_y;
 
@@ -95,8 +101,10 @@ namespace Gen_Pack
                 a_bottom = y1 - a_part.size_y;
 
 
-                foreach (Part b_part in configuration)
+                //foreach (Part b_part in configuration)
+                for(int N=0; N<configuration.Count; N++)
                 {
+                    b_part = configuration[N];
                     x2 = b_part.position_x;
                     y2 = b_part.position_y;
 
@@ -106,7 +114,7 @@ namespace Gen_Pack
                     b_top = y2;
                     b_bottom = y2 - b_part.size_y;
 
-                    if (x1 == x2 && y1 == y2)
+                    if (N==M)
                     {
                         //Part can't clash with itself
                     }
@@ -117,19 +125,18 @@ namespace Gen_Pack
                             overlap_failure += 1000.0d;
                             a_part.clashes = true;
                             b_part.clashes = true;
+                            no_clashes += 2;
                         }
                         else
                         {
-                            //distance bonus
-                            
-                            overlap_failure += Math.Abs(x2 - x1)/(a_part.size_x+ b_part.size_x) + Math.Abs(y2 - y1) / (a_part.size_x + b_part.size_x);
-                            //
+                            overlap_failure += x1 / (double)a_part.size_x  - y1/ (double)a_part.size_y -  y2 / (double)a_part.size_y;
                         }
                     }
 
                 }
             }
             a_score -= overlap_failure;
+            number_of_clashes = no_clashes;
             return a_score;
         }
 
@@ -142,21 +149,21 @@ namespace Gen_Pack
                 a_part.position_x += GetRandomNumber(-1.0d*scale,1.0d*scale);
                 a_part.position_y += GetRandomNumber(-1.0d*scale, 1.0d*scale);
 
-                if(a_part.position_x>(panel_size_x-a_part.size_x))
+                if(a_part.position_x>(panel_size_x-a_part.size_x-1))
                 {
-                    a_part.position_x = panel_size_x - a_part.size_x;
+                    a_part.position_x = panel_size_x - a_part.size_x -1;
                 }
-                if (a_part.position_x < 0.0d)
+                if (a_part.position_x < 1.0d)
                 {
-                    a_part.position_x = 0.0d;
+                    a_part.position_x = 1.0d;
                 }
-                if (a_part.position_y > (panel_size_y))
+                if (a_part.position_y > (panel_size_y-1))
                 {
-                    a_part.position_y = panel_size_y;
+                    a_part.position_y = panel_size_y-1;
                 }
-                if (a_part.position_y < a_part.size_y)
+                if (a_part.position_y < a_part.size_y +1)
                 {
-                    a_part.position_y = a_part.size_y;
+                    a_part.position_y = a_part.size_y +1;
                 }
 
                 //occassionally allow evolutions (10%)
@@ -168,21 +175,21 @@ namespace Gen_Pack
                     a_part.size_x = temp_size_y;
                     a_part.size_y = temp_size_x;
 
-                    if (a_part.position_x > (panel_size_x - a_part.size_x))
+                    if (a_part.position_x > (panel_size_x - a_part.size_x -1))
                     {
-                        a_part.position_x = panel_size_x - a_part.size_x;
+                        a_part.position_x = panel_size_x - a_part.size_x -1;
                     }
-                    if (a_part.position_x < 0.0d)
+                    if (a_part.position_x < 1.0d)
                     {
-                        a_part.position_x = 0.0d;
+                        a_part.position_x = 1.0d;
                     }
-                    if (a_part.position_y > (panel_size_y))
+                    if (a_part.position_y > (panel_size_y-1))
                     {
-                        a_part.position_y = panel_size_y;
+                        a_part.position_y = panel_size_y-1;
                     }
-                    if (a_part.position_y < a_part.size_y)
+                    if (a_part.position_y < a_part.size_y +1)
                     {
-                        a_part.position_y = a_part.size_y;
+                        a_part.position_y = a_part.size_y+1;
                     }
                 }
             }
