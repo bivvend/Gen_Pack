@@ -51,6 +51,8 @@
             this.labelHighestScore = new System.Windows.Forms.Label();
             this.labelAverageScore = new System.Windows.Forms.Label();
             this.labelBestEverScore = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxBorder = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -266,6 +268,24 @@
             this.labelBestEverScore.TabIndex = 9;
             this.labelBestEverScore.Text = "Best ever score:";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(800, 201);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(97, 20);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "Border (mm)";
+            // 
+            // textBoxBorder
+            // 
+            this.textBoxBorder.Location = new System.Drawing.Point(798, 231);
+            this.textBoxBorder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBoxBorder.Name = "textBoxBorder";
+            this.textBoxBorder.Size = new System.Drawing.Size(148, 26);
+            this.textBoxBorder.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -284,12 +304,14 @@
             this.Controls.Add(this.textBoxMaxY);
             this.Controls.Add(this.textBoxMinX);
             this.Controls.Add(this.textBoxMaxX);
+            this.Controls.Add(this.textBoxBorder);
             this.Controls.Add(this.textBoxNumber);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonPack);
             this.Controls.Add(this.buttonGenerate);
@@ -329,6 +351,8 @@
         private System.Windows.Forms.Label labelHighestScore;
         private System.Windows.Forms.Label labelAverageScore;
         private System.Windows.Forms.Label labelBestEverScore;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBoxBorder;
     }
 }
 

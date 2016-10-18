@@ -20,6 +20,8 @@ namespace Gen_Pack
         private double max_y = 0.0d;
         private double min_y = 0.0d;
 
+        private double border = 0.0d;
+
         private double sheet_x = 0.0d;
         private double sheet_y = 0.0d;
 
@@ -46,6 +48,8 @@ namespace Gen_Pack
             this.textBoxSheetX.Text = "500";
             this.textBoxSheetY.Text = "500";
 
+            this.textBoxBorder.Text = "2";
+
             packer.Number_Of_Siblings = number_siblings;
             packer.Number_Of_Steps = number_steps;
 
@@ -66,6 +70,9 @@ namespace Gen_Pack
                 this.sheet_y = Convert.ToDouble(textBoxSheetY.Text);
 
                 this.number_parts = Convert.ToInt32(textBoxNumber.Text);
+
+                this.border = Convert.ToDouble(textBoxBorder.Text);
+                
             }
             catch(Exception ex)
             {
@@ -87,6 +94,7 @@ namespace Gen_Pack
             packer.Number_Of_Siblings = number_siblings;
             packer.Number_Of_Steps = number_steps;
             packer.panel = main_panel;
+            packer.border = border;
             initial_part_list = new List<Part>();
 
             double position_x;
@@ -119,7 +127,7 @@ namespace Gen_Pack
                 position_x = initial_part_list.Count * step_x;
                 position_y = main_panel.size_y - initial_part_list.Count * step_y;
 
-                initial_part_list.Add(new Part(position_x, position_y, size_x, size_y, Part.priority.normal));                
+                initial_part_list.Add(new Part(position_x, position_y, size_x, size_y, this.border, Part.priority.normal));                
             }
             packer.initial_part_list = initial_part_list;
             packer.Fill_To_N_Evolutions(number_siblings, initial_part_list);

@@ -94,11 +94,11 @@ namespace Gen_Pack
                 x1 = a_part.position_x;
                 y1 = a_part.position_y;
 
-                a_left = x1;
-                a_right = x1 + a_part.size_x;
+                a_left = x1 - a_part.border_mm;
+                a_right = x1 + a_part.size_x + a_part.border_mm;
 
-                a_top = y1;
-                a_bottom = y1 - a_part.size_y;
+                a_top = y1 + a_part.border_mm;
+                a_bottom = y1 - a_part.size_y - a_part.border_mm;
 
 
                 //foreach (Part b_part in configuration)
@@ -108,11 +108,11 @@ namespace Gen_Pack
                     x2 = b_part.position_x;
                     y2 = b_part.position_y;
 
-                    b_left = x2;
-                    b_right = x2 + b_part.size_x;
+                    b_left = x2 -b_part.border_mm;
+                    b_right = x2 + b_part.size_x + b_part.border_mm;
 
-                    b_top = y2;
-                    b_bottom = y2 - b_part.size_y;
+                    b_top = y2 + b_part.border_mm;
+                    b_bottom = y2 - b_part.size_y - b_part.border_mm;
 
                     if (N==M)
                     {
@@ -129,7 +129,7 @@ namespace Gen_Pack
                         }
                         else
                         {
-                            overlap_failure += x1 / (double)a_part.size_x  - y1/ (double)a_part.size_y -  y2 / (double)a_part.size_y;
+                            overlap_failure += x1 / (double)a_part.size_x + x2 / (double)b_part.size_x - y1/ (double)a_part.size_y -  y2 / (double)b_part.size_y;
                         }
                     }
 
@@ -149,21 +149,21 @@ namespace Gen_Pack
                 a_part.position_x += GetRandomNumber(-1.0d*scale,1.0d*scale);
                 a_part.position_y += GetRandomNumber(-1.0d*scale, 1.0d*scale);
 
-                if(a_part.position_x>(panel_size_x-a_part.size_x-1))
+                if(a_part.position_x>(panel_size_x-a_part.size_x-1 -a_part.border_mm))
                 {
-                    a_part.position_x = panel_size_x - a_part.size_x -1;
+                    a_part.position_x = panel_size_x - a_part.size_x -1 - a_part.border_mm;
                 }
-                if (a_part.position_x < 1.0d)
+                if (a_part.position_x < a_part.border_mm)
                 {
-                    a_part.position_x = 1.0d;
+                    a_part.position_x = a_part.border_mm;
                 }
-                if (a_part.position_y > (panel_size_y-1))
+                if (a_part.position_y > (panel_size_y-1 -a_part.border_mm))
                 {
-                    a_part.position_y = panel_size_y-1;
+                    a_part.position_y = panel_size_y-1 -a_part.border_mm;
                 }
-                if (a_part.position_y < a_part.size_y +1)
+                if (a_part.position_y < a_part.size_y +1 + a_part.border_mm)
                 {
-                    a_part.position_y = a_part.size_y +1;
+                    a_part.position_y = a_part.size_y +1 + a_part.border_mm;
                 }
 
                 //occassionally allow evolutions (10%)
@@ -175,21 +175,21 @@ namespace Gen_Pack
                     a_part.size_x = temp_size_y;
                     a_part.size_y = temp_size_x;
 
-                    if (a_part.position_x > (panel_size_x - a_part.size_x -1))
+                    if (a_part.position_x > (panel_size_x - a_part.size_x - 1 - a_part.border_mm))
                     {
-                        a_part.position_x = panel_size_x - a_part.size_x -1;
+                        a_part.position_x = panel_size_x - a_part.size_x - 1 - a_part.border_mm;
                     }
-                    if (a_part.position_x < 1.0d)
+                    if (a_part.position_x < a_part.border_mm)
                     {
-                        a_part.position_x = 1.0d;
+                        a_part.position_x = a_part.border_mm;
                     }
-                    if (a_part.position_y > (panel_size_y-1))
+                    if (a_part.position_y > (panel_size_y - 1 - a_part.border_mm))
                     {
-                        a_part.position_y = panel_size_y-1;
+                        a_part.position_y = panel_size_y - 1 - a_part.border_mm;
                     }
-                    if (a_part.position_y < a_part.size_y +1)
+                    if (a_part.position_y < a_part.size_y + 1 + a_part.border_mm)
                     {
-                        a_part.position_y = a_part.size_y+1;
+                        a_part.position_y = a_part.size_y + 1 + a_part.border_mm;
                     }
                 }
             }

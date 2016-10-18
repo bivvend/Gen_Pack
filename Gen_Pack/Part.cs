@@ -12,6 +12,7 @@ namespace Gen_Pack
         public double position_y { get; set; }  //top left    w.r.t.  panel 0,0 (at bottom left)
         public double size_x { get; set; }
         public double size_y { get; set; }
+        public double border_mm { get; set; }
         public bool is_placed { get; set; }  //set true if part is on panel
         public bool clashes { get; set; } //set to true if part is overlapping with another
         public rotation part_orientation { get; set; }
@@ -35,12 +36,14 @@ namespace Gen_Pack
             this.part_orientation = rotation.top;
             this.placement_priority = priority.normal;
             this.clashes = false;
+            this.border_mm = 0.0d;
         }
 
-        public Part(double pos_x, double pos_y, double  sizex, double sizey, priority priority_to_set)
+        public Part(double pos_x, double pos_y, double  sizex, double sizey, double border, priority priority_to_set)
         {
             this.position_x = pos_x;
             this.position_y = pos_y;
+            this.border_mm = border;
             this.placement_priority = priority_to_set;
             this.size_x = sizex;
             this.size_y = sizey;
