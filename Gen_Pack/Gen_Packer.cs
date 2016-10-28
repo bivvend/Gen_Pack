@@ -25,6 +25,11 @@ namespace Gen_Pack
         public string error_string = "PACKER_OK";
         public bool allow_rotations = true;
 
+        //pack direction 
+        public bool pack_to_left = true;  //else pack to right
+        public bool pack_to_top = true;  //else pack to bottom
+
+
         public Gen_Packer()
         {
             evolutions = new List<Evolution>();
@@ -87,7 +92,7 @@ namespace Gen_Pack
 
                     foreach (Evolution state in evolutions)
                     {
-                        if (state.number_of_clashes == 0)
+                        if (state.number_of_clashes != 0)
                         {
                             state.Shuffle(panel.size_x / 4.0 + panel.size_y / 4.0, panel.size_x, panel.size_y);
                         }
@@ -99,7 +104,8 @@ namespace Gen_Pack
                     }
 
                     Evaluate_Evolutions();                   
-                    Neaten(evolutions[N_of_best]);
+                    Neaten(evolutions[N_of_best],1.0d);
+                    Neaten(evolutions[N_of_best], 0.1d);
                     //need to recalc scores to reset any clashes after neatening
                     foreach (Evolution state in evolutions)
                     {
@@ -170,7 +176,7 @@ namespace Gen_Pack
         }
 
         //tidy up to ensure good packing to left/top
-        private void Neaten(Evolution ev)
+        private void Neaten(Evolution ev, double step)
         {
             int counter = 0;
             int count_max = 100;
@@ -191,7 +197,7 @@ namespace Gen_Pack
                     prev_score = ev.score;
                     previous_clashes = a_part.clashes;
                     //shuffle 
-                    a_part.position_x -= 1.0d;
+                    a_part.position_x -= step;
                     ev.score = ev.Calc_Score();
                     if(ev.score>prev_score && a_part.position_x>=a_part.border_mm && a_part.position_x<(panel.size_x-a_part.border_mm))
                     {
@@ -215,7 +221,7 @@ namespace Gen_Pack
                     prev_score = ev.score;
                     previous_clashes = a_part.clashes;
                     //shuffle 
-                    a_part.position_y += 1.0;
+                    a_part.position_y += step;
                     ev.score = ev.Calc_Score();
                     if (ev.score>prev_score && a_part.position_y >= a_part.border_mm + a_part.size_y && a_part.position_y < (panel.size_y - a_part.border_mm))
                     {

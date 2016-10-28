@@ -28,7 +28,7 @@ namespace Gen_Pack
         private int number_parts = 1;
 
         private int number_siblings = 100;   //the number of evolutions at any time.
-        private int number_steps = 1000;
+        private int number_steps = 500;
 
         private Random random = new Random();
 
@@ -44,7 +44,7 @@ namespace Gen_Pack
             this.textBoxMinX.Text = "100";
             this.textBoxMinY.Text = "100";
 
-            this.textBoxNumber.Text = "10";
+            this.textBoxNumber.Text = "4";
             this.textBoxSheetX.Text = "500";
             this.textBoxSheetY.Text = "500";
 

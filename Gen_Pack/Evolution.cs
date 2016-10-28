@@ -129,7 +129,8 @@ namespace Gen_Pack
                         }
                         else
                         {
-                            overlap_failure += x1 / (double)a_part.size_x + x2 / (double)b_part.size_x - y1/ (double)a_part.size_y -  y2 / (double)b_part.size_y;
+                            //overlap_failure += x1 / (double)a_part.size_x + x2 / (double)b_part.size_x - y1/ (double)a_part.size_y -  y2 / (double)b_part.size_y;
+                            overlap_failure += (x1 + x2 - y1 - y2)/100.0d;
                         }
                     }
 
