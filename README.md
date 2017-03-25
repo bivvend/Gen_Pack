@@ -1,2 +1,2 @@
 # Gen_Pack
-Packing routine for parts on sheets
+genetic algorithm for packing parts on sheets
